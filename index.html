@@ -1,0 +1,195 @@
+<html>
+  <head>
+    <title>Multiplayer Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css" type="text/css">
+  </head>
+  <body>
+
+   
+   <div id="Screen">
+   
+	<div id="LogonPanel">
+	  <p id="LogonP">Choose Logon Method</p>
+      <button class="SignInAnonymous" onmousedown="Logon()"></button>
+      <button class="SignInByPhone" onmousedown="LogonPhone()"></button>
+      <button class="SignInFacebook" onmousedown="LogonFacebook()"></button>
+	</div>
+	
+	<div id="PhoneAuthPanel">
+	  <div id ="PhoneAuthSend">
+	    <input type="text" id = "PhoneAuthNumber" placeholder="+923...">
+        <div id="recaptcha_container"></div>
+        <button id="PhoneAuthSubmit" class="BlankButton" onmousedown="SubmitPhone()">Send</button>
+        <button id="PhoneAuthCancel" class="BlankButton" onmousedown="CancelPhone()">Cancel</button>
+	  </div>
+	  <div id ="PhoneAuthVerify">
+	    <input type="text" id = "PhoneAuthCode" placeholder="OTP Code">
+        <button id="PhoneVerify" class="BlankButton" onmousedown="PhoneVerify()">Verify</button>
+        <div class="p-conf">Number Verified</div>
+        <div class="n-conf">OTP Error</div>
+	  </div>
+	</div>
+	<div id="GamePanel">
+	  <p id="LoggedonP">Logged on</p>
+      <button class="BlankButton" onmousedown="Logoff()">Logoff</button>
+      <button class="BlankButton" onmousedown="Readdb()">Read</button>
+	</div>
+   </div>
+	
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+
+    <script src="javascript/FirebaseAuth.js"></script>
+    <script>
+	
+	
+      // NOTE - INCLUDE YOUR FIREBASE CONFIG HERE FOR ANYTHING TO WORK:
+      var firebaseConfig = {
+        apiKey: "AIzaSyA9dJWR05Nr4zINAGrNSLDM7OROwjvrS1U",
+        authDomain: "mytestwebproj-b13db.firebaseapp.com",
+        databaseURL: "https://mytestwebproj-b13db-default-rtdb.europe-west1.firebasedatabase.app",
+        projectId: "mytestwebproj-b13db",
+        storageBucket: "mytestwebproj-b13db.appspot.com",
+        messagingSenderId: "770242881927",
+        appId: "1:770242881927:web:37d2e968f2df985c2f4b22",
+		measurementId: "G-FPCT1LXX3G"
+      };
+	  
+	  var playerId;
+	  var playerRef;
+ 	  firebase.initializeApp(firebaseConfig);
+	  
+	  FirebaseAuthInit(AuthStateChanged,'recaptcha_container'); 
+	  
+
+	  function Logon()
+	  { AuthLogonAnonymous();
+
+	  }
+
+	  function LogonPhone()
+	  { 
+		var pn1 = document.getElementById('LogonP');
+		var pn2 = document.getElementById('PhoneAuthPanel');
+		var pn3 = document.getElementById('GamePanel');
+		pn1.style.display = 'none';
+		pn2.style.display = 'block';
+		pn3.style.display = 'none';
+	  }
+	    
+	  function SubmitPhone()
+	  { AuthSubmitPhone();
+	  }
+	  
+	  function PhoneVerify()
+	  { AuthPhoneVerify();
+	  }		
+	    
+	  function CancelPhone()
+	  { 
+		var pn1 = document.getElementById('LogonP');
+		var pn2 = document.getElementById('PhoneAuthPanel');
+		var pn3 = document.getElementById('GamePanel');
+		pn1.style.display = 'block';
+		pn2.style.display = 'none';
+		pn3.style.display = 'none';
+		
+	  }
+		
+		
+	  function LogonFacebook()
+	  {	AuthLogonFacebook();
+	  }
+	  
+	  function Logoff()
+	  {	 AuthLogoff();
+	  }
+	  
+	  function Readdb()
+	  {	var usersRef = firebase.database().ref("coins/color"); 
+
+
+		usersRef.on("value", (snapshot) => {
+			console.log( snapshot.val() || {});
+			//console.log( snapshot.child("color").val()); // 
+    
+		});
+//        usersRef.on("value", (snapshot) => {
+      //Fires whenever a change occurs
+//      players = snapshot.val() || {};
+//      Object.keys(players).forEach((key) => {
+//        const characterState = players[key];
+//        let el = playerElements[key];
+        // Now update the DOM
+//        el.querySelector(".Character_name").innerText = characterState.name;
+//        el.querySelector(".Character_coins").innerText = characterState.coins;
+//        el.setAttribute("data-color", characterState.color);
+//        el.setAttribute("data-direction", characterState.direction);
+//        const left = 16 * characterState.x + "px";
+//        const top = 16 * characterState.y - 4 + "px";
+//        el.style.transform = `translate3d(${left}, ${top}, 0)`;
+//      })
+//    })
+
+	  
+	  }
+	  
+	function AuthStateChanged(user)
+	{	var pn1 = document.getElementById('LogonP');
+		var pn2 = document.getElementById('PhoneAuthPanel');
+		var pn3 = document.getElementById('GamePanel');
+		if (user) 
+		{	pn1.style.display = 'none';
+			pn2.style.display = 'none';
+			pn3.style.display = 'block';
+						console.log(user)
+					//You're logged in!
+			playerId = user.uid;
+			playerRef = firebase.database().ref(`players/${playerId}`);
+			console.log(playerRef);
+			const name = "Bill";  //createName();
+//				playerNameInput.value = "Bill";
+
+//				const {x, y} = {1,1}; //getRandomSafeSpot();
+			const x = 1;
+			const y=1;
+
+			playerRef.set({
+				id: playerId,
+				name,
+				direction: "right",
+				color: "#00ff00",
+				x,
+				y,
+				coins: 0,
+			})
+
+				//Remove me from Firebase when I diconnect
+			playerRef.onDisconnect().remove();
+
+					//Begin the game now that we are signed in
+				//initGame();
+		} else 
+		{
+           pn1.style.display = 'block';
+			pn2.style.display = 'none';
+			pn3.style.display = 'none';
+			console.log("Logged Out. user = " + user); //You're logged out.
+						
+		}
+	}
+	  
+	  
+    </script>
+
+
+    <script src="KeyPressListener.js"></script>
+<!--    <script src="app.js"></script> -->
+  </body>
+</html>
