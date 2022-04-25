@@ -168,7 +168,7 @@ button {
 button {
   padding-left: 0.5em;
   padding-right: 0.5em;
-/*  background: #59ff5a;*/
+  color: #ffffff;
   border: 0;
   border-bottom: 0px solid #1e830b;
   cursor: pointer;
