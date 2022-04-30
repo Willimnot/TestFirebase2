@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>Multiplayer Demo</title>
+    <title>Multiplayer Client Demo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;700&display=swap" rel="stylesheet">
@@ -32,10 +32,14 @@
         <div class="n-conf">OTP Error</div>
 	  </div>
 	</div>
-	<div id="GamePanel">
+	<div id="TestPanel">
 	  <p id="LoggedonP">Logged on</p>
       <button class="BlankButton" onmousedown="Logoff()">Logoff</button>
       <button class="BlankButton" onmousedown="Readdb()">Read</button>
+	</div>
+	<div id="GamePanel">
+	</div>
+	<div id="SrcPanel">
 	</div>
    </div>
 	
@@ -46,6 +50,8 @@
 
 
     <script src="javascript/FirebaseAuth.js"></script>
+    <script src="javascript/GridDivs.js"></script>
+    <script src="javascript/ClientGame.js"></script>
     <script>
 	
 	
@@ -63,6 +69,7 @@
 	  
 	  var playerId;
 	  var playerRef;
+	  var MyClientGame = new ClientGame(document.getElementById('GamePanel'),document.getElementById('SrcPanel'));
  	  firebase.initializeApp(firebaseConfig);
 	  
 	  FirebaseAuthInit(AuthStateChanged,'recaptcha_container'); 
@@ -77,7 +84,7 @@
 	  { 
 		var pn1 = document.getElementById('LogonP');
 		var pn2 = document.getElementById('PhoneAuthPanel');
-		var pn3 = document.getElementById('GamePanel');
+		var pn3 = document.getElementById('TestPanel');
 		pn1.style.display = 'none';
 		pn2.style.display = 'block';
 		pn3.style.display = 'none';
@@ -95,7 +102,7 @@
 	  { 
 		var pn1 = document.getElementById('LogonP');
 		var pn2 = document.getElementById('PhoneAuthPanel');
-		var pn3 = document.getElementById('GamePanel');
+		var pn3 = document.getElementById('TestPanel');
 		pn1.style.display = 'block';
 		pn2.style.display = 'none';
 		pn3.style.display = 'none';
@@ -109,41 +116,27 @@
 	  
 	  function Logoff()
 	  {	 AuthLogoff();
+	    MyClientGame.EndGame();
 	  }
 	  
 	  function Readdb()
-	  {	var usersRef = firebase.database().ref("coins/color"); 
+	  {	MyClientGame.WaitGameStart(playerId);
 
+//        var playersRef = firebase.database().ref("players/");
+//        playersRef.on("child_added", function(snapshot) {
+//         console.log(snapshot.key);
+//		 console.log(snapshot.val().color);
+//        });
+//		playersRef.on("child_removed", function(snapshot) {
+//         console.log(snapshot.key);
+//        });
 
-		usersRef.on("value", (snapshot) => {
-			console.log( snapshot.val() || {});
-			//console.log( snapshot.child("color").val()); // 
-    
-		});
-//        usersRef.on("value", (snapshot) => {
-      //Fires whenever a change occurs
-//      players = snapshot.val() || {};
-//      Object.keys(players).forEach((key) => {
-//        const characterState = players[key];
-//        let el = playerElements[key];
-        // Now update the DOM
-//        el.querySelector(".Character_name").innerText = characterState.name;
-//        el.querySelector(".Character_coins").innerText = characterState.coins;
-//        el.setAttribute("data-color", characterState.color);
-//        el.setAttribute("data-direction", characterState.direction);
-//        const left = 16 * characterState.x + "px";
-//        const top = 16 * characterState.y - 4 + "px";
-//        el.style.transform = `translate3d(${left}, ${top}, 0)`;
-//      })
-//    })
-
-	  
 	  }
 	  
 	function AuthStateChanged(user)
 	{	var pn1 = document.getElementById('LogonP');
 		var pn2 = document.getElementById('PhoneAuthPanel');
-		var pn3 = document.getElementById('GamePanel');
+		var pn3 = document.getElementById('TestPanel');
 		if (user) 
 		{	pn1.style.display = 'none';
 			pn2.style.display = 'none';
@@ -156,25 +149,17 @@
 			const name = "Bill";  //createName();
 //				playerNameInput.value = "Bill";
 
-//				const {x, y} = {1,1}; //getRandomSafeSpot();
-			const x = 1;
-			const y=1;
 
 			playerRef.set({
 				id: playerId,
 				name,
-				direction: "right",
-				color: "#00ff00",
-				x,
-				y,
-				coins: 0,
+				ToServer: 0,
+				ToClient: 'ABCDABCDEFGHIJKLMNOPQ',
+				GameId: 0,
 			})
 
 				//Remove me from Firebase when I diconnect
 			playerRef.onDisconnect().remove();
-
-					//Begin the game now that we are signed in
-				//initGame();
 		} else 
 		{
            pn1.style.display = 'block';
