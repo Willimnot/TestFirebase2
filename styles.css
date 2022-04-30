@@ -22,26 +22,39 @@ html, body {
   margin:0px;
   padding:0px;
   overflow: hidden;
-  
   grid-template-columns:auto 306px auto;
-  grid-template-rows:306px;
-  grid-template-rows:306px;
+  grid-template-rows:306px 306px 20px 102px;
 }
 
-#GamePanel {
+#GamePanel{
   height: 100%;
   width: 100%;
   display: grid;
-  background-color: #00000000;
+  background-color: #808080;
   margin:0px;
   padding:0px;
   overflow: hidden;
-  
   grid-column: 2;
-    grid-row: 1;
+    grid-row: 2;
     color: #ffffee;
   grid-template-columns:34px 34px 34px 34px 34px 34px 34px 34px 34px ;
   grid-template-rows:34px 34px 34px 34px 34px 34px 34px 34px 34px ;
+
+}
+
+#SrcPanel{
+  height: 100%;
+  width: auto;
+  display: grid;
+  background-color: #808080;
+  margin:0px;
+  padding:0px;
+  overflow: hidden;
+  grid-column: 2;
+    grid-row: 4;
+    color: #ffffee;
+  grid-template-columns:34px 34px 34px 34px 34px;
+  grid-template-rows:34px 34px 34px;
 
 }
 
@@ -73,7 +86,7 @@ html, body {
     grid-row: 1;
 }
 
-#GamePanel {
+#TestPanel {
   height: 100%;
   width: 100%;
   display: none;
@@ -162,6 +175,22 @@ button {
   height: 44px;
   border-radius: 4px;
   outline: 0;
+}
+
+.CellDiv{
+	position: relative;
+	text-align: center;
+	background: #00000000;
+}
+
+
+.CellLetter{
+	position: absolute;
+	top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+	z-index: 5;
+	color: #ffffff;
 }
 
 
