@@ -141,35 +141,33 @@
 		{	pn1.style.display = 'none';
 			pn2.style.display = 'none';
 			pn3.style.display = 'block';
-						console.log(user)
-					//You're logged in!
+			console.log(user)			//You're logged in!
 			playerId = user.uid;
 			playerRef = firebase.database().ref(`players/${playerId}`);
 			console.log(playerRef);
-			const name = "Bill";  //createName();
-//				playerNameInput.value = "Bill";
+			playerRef.set({Name: user.displayName,
+				      Email: user.email,
+				      ToServer: 0,
+				      })
+			playerRef.onDisconnect().remove();  //Remove me from Firebase when I diconnect
+		 	playerRef.on('child_changed',doFromServer);
 
-
-			playerRef.set({
-				id: playerId,
-				Name: user.displayName,
-				Email: user.email,
-				ToServer: 0,
-				ToClient: 'A',
-				GameId: -1,
-			})
-
-				//Remove me from Firebase when I diconnect
-			playerRef.onDisconnect().remove();
 		} else 
-		{
-           pn1.style.display = 'block';
+		{       pn1.style.display = 'block';
 			pn2.style.display = 'none';
 			pn3.style.display = 'none';
 			console.log("Logged Out. user = " + user); //You're logged out.
-						
 		}
 	}
+	    
+	function doFromServer(snapshot)
+	{	var gid,key;
+		gid = snapshot.val();
+		console.log("message from server = " + JSON.stringify(gid));
+		key = snapshot.key;
+		console.log("message from server key = " + key);
+	}
+	
 	  
 	  
     </script>
