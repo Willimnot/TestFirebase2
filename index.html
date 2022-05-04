@@ -151,8 +151,8 @@
 				      ToServer: 0,
 				      })
 			playerRef.onDisconnect().remove();  //Remove me from Firebase when I diconnect
-		        messageRef = firebase.database().ref(`players/${playerId}/Locked`);
-		 	messageRef.on('child_added',doFromServer);
+		        messageRef = firebase.database().ref(`players/${playerId}/Locked/ToClient`);
+		 	messageRef.on('value',doFromServer);
 
 		} else 
 		{       pn1.style.display = 'block';
