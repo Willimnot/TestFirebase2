@@ -69,7 +69,8 @@
 	  
 	  var playerId;
 	  var playerRef;
-	  var messageRef;
+	  var inputRef;
+	  var outputRef;
 	  var MyClientGame = new ClientGame(document.getElementById('GamePanel'),document.getElementById('SrcPanel'));
  	  firebase.initializeApp(firebaseConfig);
 	  
@@ -145,14 +146,15 @@
 			console.log(user)			//You're logged in!
 			playerId = user.uid;
 			playerRef = firebase.database().ref(`players/${playerId}`);
+		        inputRef = firebase.database().ref(`players/${playerId}/Locked/ToClient`);
+		        outputRef = firebase.database().ref(`1pgames/${playerId}`);
 			console.log(playerRef);
 			playerRef.set({Name: user.displayName,
 				      Email: user.email,
 				      ToServer: 0,
 				      })
 			playerRef.onDisconnect().remove();  //Remove me from Firebase when I diconnect
-		        messageRef = firebase.database().ref(`players/${playerId}/Locked/ToClient`);
-		 	messageRef.on('value',doFromServer);
+		 	inputRef.on('value',doFromServer);
 
 		} else 
 		{       pn1.style.display = 'block';
