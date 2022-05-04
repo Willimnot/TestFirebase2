@@ -76,39 +76,34 @@
 	  
 
 	  function Logon()
-	  { AuthLogonAnonymous();
-
+	  { //AuthLogonAnonymous();
 	  }
 
 	  function LogonPhone()
-	  { 
-		var pn1 = document.getElementById('LogonP');
-		var pn2 = document.getElementById('PhoneAuthPanel');
-		var pn3 = document.getElementById('TestPanel');
-		pn1.style.display = 'none';
-		pn2.style.display = 'block';
-		pn3.style.display = 'none';
+	  { //	var pn1 = document.getElementById('LogonP');
+	//	var pn2 = document.getElementById('PhoneAuthPanel');
+	//	var pn3 = document.getElementById('TestPanel');
+	//	pn1.style.display = 'none';
+	//	pn2.style.display = 'block';
+	//	pn3.style.display = 'none';
 	  }
 	    
 	  function SubmitPhone()
-	  { AuthSubmitPhone();
+	  { //AuthSubmitPhone();
 	  }
 	  
 	  function PhoneVerify()
-	  { AuthPhoneVerify();
+	  { //AuthPhoneVerify();
 	  }		
 	    
 	  function CancelPhone()
-	  { 
-		var pn1 = document.getElementById('LogonP');
-		var pn2 = document.getElementById('PhoneAuthPanel');
-		var pn3 = document.getElementById('TestPanel');
-		pn1.style.display = 'block';
-		pn2.style.display = 'none';
-		pn3.style.display = 'none';
-		
+	  {//	var pn1 = document.getElementById('LogonP');
+	//	var pn2 = document.getElementById('PhoneAuthPanel');
+	//	var pn3 = document.getElementById('TestPanel');
+	//	pn1.style.display = 'block';
+	//	pn2.style.display = 'none';
+	//	pn3.style.display = 'none';
 	  }
-		
 		
 	  function LogonFacebook()
 	  {	AuthLogonFacebook();
@@ -116,12 +111,11 @@
 	  
 	  function Logoff()
 	  {	 AuthLogoff();
-	    MyClientGame.EndGame();
+//		MyClientGame.EndGame();
 	  }
 	  
 	  function Readdb()
-	  {	MyClientGame.WaitGameStart(playerId);
-
+	  {	//MyClientGame.WaitGameStart(playerId);
 //        var playersRef = firebase.database().ref("players/");
 //        playersRef.on("child_added", function(snapshot) {
 //         console.log(snapshot.key);
@@ -130,7 +124,9 @@
 //		playersRef.on("child_removed", function(snapshot) {
 //         console.log(snapshot.key);
 //        });
-
+	    var updates = {};
+	    updates['/1pgames/' + playerId + '/ToServer'] = 0;
+	    firebase.database().ref().update(updates);
 	  }
 	  
 	function AuthStateChanged(user)
