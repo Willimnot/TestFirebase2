@@ -9,39 +9,37 @@
   <body>
 
    
-   <div id="Screen">
-   
-	<div id="LogonPanel">
-	  <p id="LogonP">Choose Logon Method</p>
-      <button class="SignInAnonymous" onmousedown="Logon()"></button>
-      <button class="SignInByPhone" onmousedown="LogonPhone()"></button>
-      <button class="SignInFacebook" onmousedown="LogonFacebook()"></button>
+<div id="Screen">
+   	<div id="LogonPanel">
+		<p id="LogonP">Choose Logon Method</p>
+		<button class="SignInAnonymous" onmousedown="Logon()"></button>
+		<button class="SignInByPhone" onmousedown="LogonPhone()"></button>
+		<button class="SignInFacebook" onmousedown="LogonFacebook()"></button>
 	</div>
-	
 	<div id="PhoneAuthPanel">
-	  <div id ="PhoneAuthSend">
-	    <input type="text" id = "PhoneAuthNumber" placeholder="+923...">
-        <div id="recaptcha_container"></div>
-        <button id="PhoneAuthSubmit" class="BlankButton" onmousedown="SubmitPhone()">Send</button>
-        <button id="PhoneAuthCancel" class="BlankButton" onmousedown="CancelPhone()">Cancel</button>
-	  </div>
-	  <div id ="PhoneAuthVerify">
-	    <input type="text" id = "PhoneAuthCode" placeholder="OTP Code">
-        <button id="PhoneVerify" class="BlankButton" onmousedown="PhoneVerify()">Verify</button>
-        <div class="p-conf">Number Verified</div>
-        <div class="n-conf">OTP Error</div>
-	  </div>
+		<div id ="PhoneAuthSend">
+	    		<input type="text" id = "PhoneAuthNumber" placeholder="+923...">
+			<div id="recaptcha_container"></div>
+        		<button id="PhoneAuthSubmit" class="BlankButton" onmousedown="SubmitPhone()">Send</button>
+        		<button id="PhoneAuthCancel" class="BlankButton" onmousedown="CancelPhone()">Cancel</button>
+	  	</div>
+	  	<div id ="PhoneAuthVerify">
+	   		<input type="text" id = "PhoneAuthCode" placeholder="OTP Code">	
+			<button id="PhoneVerify" class="BlankButton" onmousedown="PhoneVerify()">Verify</button>
+			<div class="p-conf">Number Verified</div>
+			<div class="n-conf">OTP Error</div>
+		</div>
 	</div>
 	<div id="TestPanel">
-	  <p id="LoggedonP">Logged on</p>
-      <button class="BlankButton" onmousedown="Logoff()">Logoff</button>
-      <button class="BlankButton" onmousedown="Readdb()">Read</button>
+		<p id="LoggedonP">Logged on</p>
+		<button class="BlankButton" onmousedown="Logoff()">Logoff</button>
+		<button class="BlankButton" onmousedown="Readdb()">Read</button>
 	</div>
 	<div id="GamePanel">
 	</div>
 	<div id="SrcPanel">
 	</div>
-   </div>
+</div>
 	
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
