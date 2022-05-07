@@ -178,7 +178,9 @@
 		}
 	 	if (typ=='string')
 		{ if (MyGameState==GameState_Ready)
-		  {  console.log("....ip is string so in game");
+		  {  console.log("....GameStateReady so ip is init. string");
+		     MyClientGame.InitGame(ip);
+		     MyGameState = GameState_Active;  
 		     return;
 		  }
 		}
