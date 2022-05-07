@@ -1,43 +1,26 @@
 class ClientGame 
 {
 	constructor(GamePanel,SelectPanel)
-	{ this.UserId      = null;
-	  this.WaitGameRef = null;
-	  this.WaitInfoRef = null;
-	  this.GamePnl     = GamePanel;
+	{ this.GamePnl     = GamePanel;
 	  this.SelectPnl   = SelectPanel;
+	  this.InGame      = false;
+	  this.Selected    = 0;
 	  this.GridDivs    =[[null,null,null,null,null,null,null,null,null],
-						 [null,null,null,null,null,null,null,null,null],
-						 [null,null,null,null,null,null,null,null,null],
-						 [null,null,null,null,null,null,null,null,null],
-						 [null,null,null,null,null,null,null,null,null],
-						 [null,null,null,null,null,null,null,null,null],
-						 [null,null,null,null,null,null,null,null,null],
-						 [null,null,null,null,null,null,null,null,null],
-						 [null,null,null,null,null,null,null,null,null]];
+			     [null,null,null,null,null,null,null,null,null],
+			     [null,null,null,null,null,null,null,null,null],
+			     [null,null,null,null,null,null,null,null,null],
+			     [null,null,null,null,null,null,null,null,null],
+			     [null,null,null,null,null,null,null,null,null],
+			     [null,null,null,null,null,null,null,null,null],
+			     [null,null,null,null,null,null,null,null,null],
+			     [null,null,null,null,null,null,null,null,null]];
 	  this.SelectDivs  = [null,null,null,null,null,null,null,null,null,
-						  null,null,null,null,null,null];
+			      null,null,null,null,null,null];
 						  
 	  this.doInitGameDivs();
 	  this.doClearGameDivs();
 	}
 
-
-	EndGame()
-	{
-	  this.doClearGameDivs();
-	}
-	
-	
-	WaitGameStart(MyUserId)
-	{	var typ,gid;
-	    this.doClearGameDivs();
-	
-		this.UserId = MyUserId;
-		this.WaitGameRef = firebase.database().ref('players/'+MyUserId+'/GameId'); 
-		this.WaitGameRef.on("value",this.doWaitGameStart,this);
-	}
-	
 
 	InitGame(InitInfo) 
 	{
@@ -51,6 +34,8 @@ class ClientGame
 	  for (i=0;i<15;i++)
 	  {	this.doSetLetter(this.SelectDivs[i],InitInfo[i+4]);
 	  }
+	  this.Selected = 0;
+	  this.InGame = true;
 	}
 
 
@@ -67,7 +52,7 @@ class ClientGame
 		  if ((i==0)||(i==8)) ix = 1;
 		  if ((j==0)||(j==8)) ix = 1;
 		  if (ix==1)
-				im.setAttribute("src", "images/activecell.png");
+		       im.setAttribute("src", "images/activecell.png");
 		  else im.setAttribute("src", "images/dormantcell.png");
 		  im = im.nextElementSibling;
 		  if (im!=null) im.remove();
@@ -85,6 +70,8 @@ class ClientGame
 
 	doGridClick(ev) 
 	{ console.log(ev.currentTarget);
+	  if (this.InGame==false) return;
+	  this.doSetLetter(ev.currentTarget,'A');
 		
 	}
 
@@ -103,7 +90,7 @@ class ClientGame
 			im.setAttribute("height", "34");
 			im.setAttribute("width", "34");
 			dv.appendChild(im);
-//			dv.onclick = this.doGridClick.bind(this);
+			dv.onclick = this.doGridClick.bind(this);
 		  }
 		  this.GamePnl.appendChild(dv);
 		  this.GridDivs[j][i] = dv;
@@ -142,34 +129,6 @@ class ClientGame
 	}
 
 
-	doWaitGameInfo(snapshot,x)
-	{	var typ,str;
-		typ = typeof(snapshot.val());
-//		console.log("Start Game Info is " + snapshot.val() 
-//		+ " value is of type " + typ); 
-		if (typ!=='string') return;
-		str = snapshot.val();
-		console.log(str);
-		this.InitGame(str);
-
-	}
 	
 	
-	doWaitGameStart(snapshot,x)
-	{	var typ,gid;
-		console.log("Game Id changed to " + snapshot.val() 
-		+ " value is of type " + typeof(snapshot.val())); 
-		gid = snapshot.val();
-		typ = typeof(snapshot.val());
-		if ((typ==='number')&&(gid>=0))
-		{	console.log('Ready to start game'); 
-			this.WaitGameRef.off();
-		}
-		else
-		{
-			return;
-		}
-		this.WaitInfoRef = firebase.database().ref('players/'+this.UserId+'/ToClient'); 
-		this.WaitInfoRef.on("value",this.doWaitGameInfo,this);
-	}
 }
