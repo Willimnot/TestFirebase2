@@ -14,6 +14,15 @@ class ClientGame
 			     [null,null,null,null,null,null,null,null,null],
 			     [null,null,null,null,null,null,null,null,null],
 			     [null,null,null,null,null,null,null,null,null]];
+	  this.GridEnabled =[[false,false,false,false,false,false,false,false,false],
+			     [false,false,false,false,false,false,false,false,false],
+			     [false,false,false,false,false,false,false,false,false],
+			     [false,false,false,false,false,false,false,false,false],
+			     [false,false,false,false,false,false,false,false,false],
+			     [false,false,false,false,false,false,false,false,false],
+			     [false,false,false,false,false,false,false,false,false],
+			     [false,false,false,false,false,false,false,false,false],
+			     [false,false,false,false,false,false,false,false,false]];
 	  this.SelectDivs  = [null,null,null,null,null,null,null,null,null,
 			      null,null,null,null,null,null];
 						  
@@ -36,6 +45,12 @@ class ClientGame
 	  }
 	  this.Selected = 0;
 	  this.InGame = true;
+	  for (i=1;i<8;i++)
+	  { this.GridEnabled[0][i] = true;
+	    this.GridEnabled[i][0] = true;
+	    this.GridEnabled[8][i] = true;
+	    this.GridEnabled[i][8] = true;
+	  }
 	}
 
 
@@ -45,7 +60,8 @@ class ClientGame
 	
 	  for (i=0;i<9;i++)
 	  {	for (j=0;j<9;j++)
-		{ if (((i&j)&1)!=0) continue;
+		{ this.GridEnabled[j][i] = false;
+		  if (((i&j)&1)!=0) continue;
 		  dv = this.GridDivs[j][i];
 		  im = dv.firstElementChild;
 		  ix = 0;
@@ -71,7 +87,12 @@ class ClientGame
 	doGridClick(ev) 
 	{ console.log(ev.currentTarget);
 	  if (this.InGame==false) return;
-	  this.doSetLetter(ev.currentTarget,'A');
+	  var dv = ev.currentTarget;
+	  var id = dv.id;
+	  var row  = Number(id[0]);
+	  var col  = Number(id[1]);
+	  if (this.GridEnabled[col][row]==false) return;
+	  this.doSetLetter(dv,'A');
 		
 	}
 
