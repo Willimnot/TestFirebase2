@@ -163,11 +163,20 @@
 	}
 	    
 	function doFromServer(snapshot)
-	{	var gid,key;
-		gid = snapshot.val();
-		console.log("message from server = " + JSON.stringify(gid));
+	{	var ip,key,typ;
 		key = snapshot.key;
-		console.log("message from server key = " + key);
+		ip  = snapshot.val();
+	 	typ = typeof(ip);
+		console.log("In doFromServer callback - key = " + key + " , input = " + JSON.stringify(ip));
+	 	if (ip==null)
+		{ console.log("....do nothing");
+		}
+	 	if (typ=='number')
+		{ console.log("....ip is number so ready to start game");
+		}
+	 	if (typ=='string')
+		{ console.log("....ip is string so in game");
+		}
 	}
 	    
 	function doGameIfAdded(snapshot)
