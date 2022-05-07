@@ -92,7 +92,9 @@ class ClientGame
 	  var row  = Number(id[0]);
 	  var col  = Number(id[1]);
 	  if (this.GridEnabled[col][row]==false) return;
-	  this.doSetLetter(dv,'A');
+	  var lt = this.SelectDivs[this.Selected];
+	  lt = lt.lastElementChild;
+	  this.doSetLetter(dv,lt.innerHTML);
 		
 	}
 
@@ -135,7 +137,11 @@ class ClientGame
 
 	doSelectClick(ev) 
 	{ console.log(ev.currentTarget);
-		
+	  if (this.InGame==false) return;
+	  var dv = ev.currentTarget;
+	  var id = dv.id;
+	  var row  = Number(id);
+	  this.Selected = row;
 	}
 
 
@@ -143,10 +149,16 @@ class ClientGame
 	{
 	var tx;
 	
-	  tx = document.createElement("DIV");
-	  tx.classList.add("CellLetter");
-	  tx.innerHTML = Letter;
-	  TheDiv.appendChild(tx);
+	  tx = TheDiv.lastElementChild;
+	  if ((tx!=null)&&(tx.nodeName==('DIV')))
+	  {  tx.innerHTML = Letter;
+	  }
+	  else
+	  {  tx = document.createElement("DIV");
+	     tx.classList.add("CellLetter");
+	     tx.innerHTML = Letter;
+	     TheDiv.appendChild(tx);
+	  }
 	}
 
 
