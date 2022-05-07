@@ -143,8 +143,8 @@
 			console.log(user)			//You're logged in!
 			playerId = user.uid;
 			playerRef = firebase.database().ref(`players/${playerId}`);
-		 	gameIfRef = firebase.database().ref(`1pgames/${playerId}`);
-		 	gameIfRef.on('child_added',doGameIfAdded);
+//		 	gameIfRef = firebase.database().ref(`1pgames/${playerId}`);
+//		 	gameIfRef.once('child_added',doGameIfAdded);
 		        inputRef = firebase.database().ref(`players/${playerId}/Locked/ToClient`);
 		        outputRef = firebase.database().ref(`1pgames/${playerId}`);
 			console.log(playerRef);
@@ -153,6 +153,7 @@
 				      ToServer: 0,
 				      })
 			playerRef.onDisconnect().remove();  //Remove me from Firebase when I diconnect
+		 	inputRef.on('value',doFromServer);
 		} else 
 		{       pn1.style.display = 'block';
 			pn2.style.display = 'none';
@@ -175,9 +176,9 @@
 		console.log("game i/f added = " + JSON.stringify(gid));
 		key = snapshot.key;
 		console.log("game i/f key = " + key);
-	 	MyGameState = 0;
-	 	gameIfRef.off('child_added',doGameIfAdded);
-	 	inputRef.on('value',doFromServer);
+//	 	MyGameState = 0;
+//	 	gameIfRef.off('child_added',doGameIfAdded);
+//	 	inputRef.on('value',doFromServer);
 	}
 	
 	  
