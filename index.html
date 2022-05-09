@@ -33,11 +33,10 @@
 	<div id="TestPanel">
 		<p id="LoggedonP">Logged on</p>
 		<button class="BlankButton" onmousedown="Logoff()">Logoff</button>
-		<button class="BlankButton" onmousedown="Readdb()">Read</button>
+		<button class="BlankButton" onmousedown="Submit()">Submit</button>
 	</div>
 	<div id="GamePanel">
 	</div>
-	<button id="SubmitBtn">Submit</button>
 	<div id="SrcPanel">
 	</div>
 </div>
@@ -121,19 +120,18 @@
 //		MyClientGame.EndGame();
 	  }
 	  
-	  function Readdb()
-	  {	//MyClientGame.WaitGameStart(playerId);
-//        var playersRef = firebase.database().ref("players/");
-//        playersRef.on("child_added", function(snapshot) {
-//         console.log(snapshot.key);
-//		 console.log(snapshot.val().color);
-//        });
-//		playersRef.on("child_removed", function(snapshot) {
-//         console.log(snapshot.key);
-//        });
-	    var updates = {};
-	    updates['/1pgames/' + playerId + '/ToServer'] = 0;
-	    firebase.database().ref().update(updates);
+	  function Submit()
+	  { var updates = {};
+	    if (MyGameState==GameState_Ready)
+	    {  console.log("....GameStateReady so submit 0 to server");
+	       updates['/1pgames/' + playerId + '/ToServer'] = 0;
+	       firebase.database().ref().update(updates);
+	    }
+	    if (MyGameState==GameState_Active)
+	    {  console.log("....GameStateActive so submit 1 to server");
+	       updates['/1pgames/' + playerId + '/ToServer'] = 1;
+	       firebase.database().ref().update(updates);
+	    }
 	  }
 	  
 	function AuthStateChanged(user)
