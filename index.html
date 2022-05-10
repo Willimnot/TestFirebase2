@@ -73,7 +73,8 @@
 	var playerRef;
 	var inputRef;
 	var outputRef;
-	var MyGameState = GameState_Dormant;  
+	var MyGameState = GameState_Dormant; 
+	var TempNum     = 1;
 	    
 	  var MyClientGame = new ClientGame(document.getElementById('GamePanel'),document.getElementById('SrcPanel'));
  	  firebase.initializeApp(firebaseConfig);
@@ -128,8 +129,9 @@
 	       firebase.database().ref().update(updates);
 	    }
 	    if (MyGameState==GameState_Active)
-	    {  console.log("....GameStateActive so submit 1 to server");
-	       updates['/1pgames/' + playerId + '/ToServer'] = 1;
+	    {  console.log("....GameStateActive so submit TempNum to server");
+	       updates['/1pgames/' + playerId + '/ToServer'] = TempNum;
+	       TempNum++;
 	       firebase.database().ref().update(updates);
 	    }
 	  }
