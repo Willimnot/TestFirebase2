@@ -44,6 +44,7 @@ class ClientGame
 	  {	this.doSetLetter(this.SelectDivs[i],InitInfo[i+4]);
 	  }
 	  this.Selected = 0;
+	  this.doChangeSelected(0,0);
 	  this.InGame = true;
 	  for (i=1;i<8;i++)
 	  { this.GridEnabled[0][i] = true;
@@ -51,6 +52,19 @@ class ClientGame
 	    this.GridEnabled[8][i] = true;
 	    this.GridEnabled[i][8] = true;
 	  }
+	}
+
+
+	doChangeSelected(NewIx,OldIx) 
+	{
+	var dv,im;
+	
+	  dv = this.SelectDivs[OldIx];
+	  im = dv.firstElementChild;
+	  im.setAttribute("src","images/activecell.png");
+	  dv = this.SelectDivs[NewIx];
+	  im = dv.firstElementChild;
+	  im.setAttribute("src","images/enabledcell.png");
 	}
 
 
@@ -141,6 +155,7 @@ class ClientGame
 	  var dv = ev.currentTarget;
 	  var id = dv.id;
 	  var row  = Number(id);
+	  this.doChangeSelected(row,this.Selected);
 	  this.Selected = row;
 	}
 
